@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+	<link rel="stylesheet" href="css/fontello.css">
+	<script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+    <title>叮咚记账</title>
+</head>
+<body>
+
+<div class="main">
+	<div class="header">
+		<div class="title fl">叮咚记账</div>
+		<div class="bar oper fr">
+			<a class="list-prev-m icon hidden"></a>
+			<a class="list-next-m icon hidden"></a>
+		</div>
+	</div>
+	
+	<div class="wrapper dashboard">
+		<div class="forgrid">
+			<a class="item addoc">增加支出</a>
+			<a class="item addic">增加收入</a>
+			<a class="item big">大额支出</a>
+			<a class="item chart">按月盈余</a>
+		</div>
+		<div class="forgrid">
+			<a class="item cftype">分类配置</a>
+			<a class="item back2sd">数据备份</a>
+			<a class="item jd">导入京东订单</a>
+			<a class="item recom">关于叮咚</a>			
+		</div>
+		
+		<div class="chartTitle">
+			最近30天消费趋势图
+		</div>
+		<div id="yaxis"></div>
+		<div id="chart30">
+			<div id="dashchart"></div>
+		</div>
+		
+		<div class="summary">
+			<a class="item">
+			<i>上月消费</i> ￥<span class="lastm"></span>
+			</a>
+			<a class="item">
+			<i>本月消费</i> ￥<span class="currentm"></span>
+			</a>
+			<a class="item">
+			<i>平均每天</i> ￥<span class="currentaver"></span>
+			</a>
+			<a class="item">
+			<i>较上月</i> <span class="per">--</span> <i class="picon"></i>
+			</a>			
+		</div>
+	</div>
+	
+	<div class="wrapper list hidden">
+		<div class="month">
+			总支出<i class="oc"></i> 总收入<i class="ic"></i>
+		</div>
+		
+		<div class="calendar hidden" id="calendar">
+			<div class="weeks">
+				<table width="100%">
+					<tbody><tr align="middle" bgcolor="#e0e0e0">
+			          <td width="14%">日</td>
+			          <td width="14%">一</td>
+			          <td width="14%">二</td>
+			          <td width="14%">三</td>
+			          <td width="14%">四</td>
+			          <td width="14%">五</td>
+			          <td width="14%">六</td>
+		        	</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="daygrid">
+			</div>	
+		</div>
+		
+		<div class="scroll" id="ccscroll">
+			<ul class="cclist">
+				<li class="title template">
+					<div class="date"></div> <i></i>
+				</li>
+				<li class="item template">
+					<div class="checki"></div>
+					<div class="cat"></div>
+					<div class="desc"></div>
+					<div class="total"></div>
+					<i class="method"></i>
+				</li> 
+			</ul>
+		</div>
+	</div>
+	
+	<div class="wrapper hidden config">
+		<ul>
+			<li class="entry">
+				<div class="title sd-backup">备份数据到SD卡</div>
+			</li>
+			<li class="entry sd-recover">
+				<div class="title">从SD卡恢复数据</div>
+			</li>
+			<li class="entry oc-type">
+				<div class="title">支出分类配置</div>
+			</li>
+			<li class="entry bigger-type">
+				<div class="title">大笔支出金额</div>
+				<i class="value">100</i>
+			</li>
+			<li class="entry">
+				<div class="title about">关于叮咚</div>
+			</li>
+		</ul>
+	</div>
+	
+	<div class="wrapper hidden chart">
+		<div class="item">
+			起始时间 <input type="text" id="chstart" class="date" value="">
+		</div>
+		<div class="item">
+			截止时间 <input type="text" id="chstop" class="date" value="">
+		</div>
+		<div class="op">
+			<a class="btn" id="ch-btn-cfm">确定</a>
+		</div>
+		<div id="chsummary" class="hidden">
+			<ul>
+				<li>
+					<div id="catpie"></div>
+				</li>
+				<li class="info total">
+					<i>总计支出</i> <span ></span>
+				</li>
+				<li class="info vari">
+					<i>大额支出</i> <span></span>
+				</li>
+				<li class="info aver">
+					<i>平均每日</i> <span></span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="bottom">
+		<a class="item nvdb sib">首页</a>
+		<a class="item nvlist sib">收支列表</a>
+		<a class="item nvchart sib">统计</a>
+		<a class="item nvcfg sib">配置</a>
+	</div>
+</div>
+
+<div class="page edit-oc hidden">
+	<div class="header">
+		<div class="bar fl"> <a class="icon return"></a></div>
+		<div class="bar fr"> <a class="icon yes"></a></div>
+		<div class="bar fr"> <a class="icon remove"></a></div>
+	</div>
+	
+	<div class="wrapper">
+		<div class="form">
+			<div class="item">
+				<input class="total" type="number" style="width:5rem;" placeholder="支出金额" value="0">RMB
+				<input class="date fr" style="width:5rem;"  type="text"> 
+			</div>
+			<div class="item">
+				支出方式  ：  
+				<select class="by">
+						<option>现金或刷卡</option>
+						<option>网购</option>
+				</select> 
+			</div> 
+			
+			<div class="item">
+				支出类别：  
+				<select class="type">
+				</select> 
+			</div>
+			
+			<div class="item">
+				<textarea class="desc" placeholder="描述(可选)"></textarea>
+			</div>
+			<div class="item" style="padding: 0;border-bottom: none;">
+				<div class="op">
+					<a class="btn add-detail">增加细目</a>
+				</div>
+				  
+				<table class="oclist">
+				</table>
+			</div>
+		</div>
+		
+		<div class="detail hidden">
+			<div class="form">
+				<div class="item">
+					<input class="price" type="number"  placeholder="支出金额">RMB
+				</div>
+				<div class="item">
+					<input class="name" type="text" placeholder="物品名称">
+				</div>
+				<div class="item">
+					<a class="btn add">增加并新建</a> <a class="btn close fr">关闭</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="page edit-ic hidden">
+	<div class="header">
+		<div class="bar fl"> <a class="icon return"></a></div>
+		<div class="bar fr"> <a class="icon yes"></a></div>
+		<div class="bar fr"> <a class="icon remove"></a></div>
+	</div>
+	
+	<div class="wrapper">
+		<div class="form">
+			<div class="item">
+				<input class="total" type="number" style="width:5rem;" placeholder="收入金额" value="">
+				<input class="date fr" style="width:5rem;"  type="text" placeholder="时间" value=""> 
+			</div>
+			
+			<div class="item">
+				收入来源：  
+				<select class="type">
+					<option>工资收入</option>
+					<option>奖金收入</option>
+					<option>投资获利</option>
+				</select> 
+			</div>
+			
+			<div class="item">
+				<textarea class="desc" placeholder="描述(可选)"></textarea>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="page oc-types hidden">
+	<div class="header">
+		<div class="bar fl"> <a class="icon return"></a></div>
+		分类配置
+		<div class="bar fr"> <a class="icon add"></a></div>
+	</div>
+	
+	<div class="wrapper" id="typecfg-wrapper">
+		<ul class="type-list-edit">
+		</ul>
+	</div>
+</div>
+
+<div class="page big-ocs hidden">
+	<div class="header">
+		<div class="bar fl"> <a class="icon close"></a></div>
+		大额支出
+	</div>
+	
+	<div class="wrapper" id="big-wrapper">
+		<ul class="detlist">
+			
+		</ul>
+	</div>
+</div>
+
+<div class="page oi-compare hidden">
+	<div class="header">
+		<div class="bar fl"> <a class="icon close"></a></div>
+		按月盈余
+	</div>
+	<div class="wrapper">
+		<table class="compare">
+			<tr class="template">
+				<td class="month">
+				<span class="yy">2014</span><br><span class="mm"></span>月</td>
+				
+				<td class="chart">
+					<div style="width: 0px;" class="oc"></div>
+					<div style="width: 0px;" class="ic"></div>
+				</td>
+				<td class="data">
+					<div class="oc">支出2312元</div>
+					<div class="ic">收入34元</div>
+					<div class="dec">盈亏+293元</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+
+<div class="page data-recover hidden">
+	<div class="header">
+		<div class="bar fl"> <a class="icon close"></a></div>
+		数据还原
+	</div>
+	<div class="wrapper" id="backup-list">
+		<ul>
+			
+		</ul>
+	</div>
+</div>
+
+<div class="page abount-dido hidden">
+	<div class="header">
+		<div class="bar fl"> <a class="icon close"></a></div>
+		关于叮咚记账
+	</div>
+	<div class="wrapper">
+		<div class="content">
+			叮咚记账是一款简洁、高效的个人家庭记账软件。
+			叮咚记账专注于提供细致的收入、支出记录及分析，去掉了常见记账软件复杂的财务设置和不常用功能，在支出上面，支持支出细目的增加。
+			根据广大用户经常网购的习惯，还提供了从京东导入个人订单的功能，将来也会提供淘宝的订单导入，支持SD卡数据备份和还原。
+			
+			叮咚记账在技术设计上还采用了先进的HTML5技术，功能自然流畅，软件大小控制到了0.5M以下，是您随身记账的理想选择。
+		</div>
+		<div class="content">
+			关于我们： 叮咚软件是一个专注于创造价值的移动服务提供者。 联系邮件: liuhann@gmail.com
+		</div>
+	</div>
+</div>
+
+
+
+
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/taffy-min.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/iscroll-lite.js"></script>
+<script type="text/javascript" src="js/d3.min.js"></script>
+
+</body>
+</html>
+
+

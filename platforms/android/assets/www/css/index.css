@@ -1,0 +1,953 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+body {
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+    background-color:#E4E4E4;
+	margin:0px;
+    padding:0px;
+}
+
+ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.fl {
+	float: left;
+}
+.fr {
+	float: right;
+}
+.hidden, .template {
+	display: none;
+}
+
+.alert {
+	background: #f3f3f5;
+	color: #333;
+	padding: .5rem 1.5rem;
+	line-height: 3rem;
+}
+
+a.btn {
+	margin-right: .5rem;
+	padding: .3rem 1rem;
+	color: #fff;
+	background-color: #5685E4;
+	vertical-align: middle;
+	font-weight: normal;
+	font-size: 1.125rem;
+	text-align: center;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+
+a.btn.pressed {
+	background-color: #9fB9F2;
+}
+
+a.big-btn {
+	margin: 1rem;
+	color: #fff;
+	background-color: #1DB9F2;
+	vertical-align: middle;
+	font-weight: normal;
+	display: block;
+	font-size: 1.125rem;
+	line-height: 2.5rem;
+	text-align: center;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+
+ .clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: ".";
+    clear: both;
+    height: 0;
+}
+
+.header {
+	height: 2.8rem;
+	color: #E2E6ED;
+	text-align: center;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 19;
+	border-bottom: 1px solid #2B3447;
+	background-color: #323C52;
+	line-height: 2.5rem;
+}
+
+.header .title {
+	padding: .8rem 1rem;
+	font-size: 1.125rem;
+	line-height: 1.125rem;
+}
+
+.header .bar .icon {
+	font-size: 1.5rem;
+	line-height: 2.5rem;
+	color: #fff;
+	text-align: center;
+	padding: .8rem 1rem;
+	font-weight: lighter;
+	font-family: "fontello";
+}
+
+.header .bar .icon.add:before {
+	content: '\e805';
+}
+.header .bar .icon.return:before {
+	content: '\e80e';
+}
+.header .bar .icon.yes:before {
+	content: '\e801';
+}
+.header .bar .icon.remove:before {
+	content: '\e819';
+}
+.header .bar .icon.cancel:before {
+	content: '\e80c';
+}
+.header .bar .icon.close:before {
+	content: '\e819';
+}
+
+.header .bar .icon.list-next-m:before {
+	content: '\e812';
+}
+.header .bar .icon.list-prev-m:before {
+	content: '\e80e';
+}
+.header .bar .icon.list-remove:before {
+	content: '\e817';
+}
+
+.header .bar .icon.pressed {
+	background-color:#3BC4F7; 
+}
+
+.main , .page {
+	z-index: 1;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: white;
+}
+.page {
+	z-index: 9;
+}
+.main .wrapper {
+	background:white;
+	top: 2.8rem;
+	left: 0; 
+	right: 0;
+	position: absolute;
+	bottom: 3.5rem;
+}
+
+.main .pop-wrapper {
+	background:white;
+	top: 8rem;
+	left: 4rem; 
+	right: 0;
+	position: absolute;
+	bottom: 3.5rem;
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+}
+
+.main .wrapper.hs {
+	overflow:scroll;
+	-webkit-overflow-scrolling: touch; 
+}
+
+.main .bottom {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	height: 3.4rem;
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	border-top: 1px solid #ccc;
+}
+
+.main .bottom .item {
+	display: block;
+	position: relative;
+	font-size: .75rem;
+	font-weight:normal;
+	background-color: #323C52;
+	color: #7180A8;
+	text-align: center;
+	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
+	-webkit-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+}
+
+.main .bottom .item.sibon {
+	color: #E2E6ED;	
+}
+
+.main .bottom .item.blink {
+	color:#F74C31; 
+}
+
+.main .bottom .item:before {
+	margin-top: .3rem;
+	font-size: 1.75rem;
+	display:block;
+	font-family: "fontello";
+}
+
+.main .bottom .item.nvdb:before {
+	content: '\e804';
+}
+
+.main .bottom .item.nvlist:before {
+	content: '\e814';
+}
+
+.main .bottom .item.nvchart:before {
+	content: '\e811';
+}
+
+.main .bottom .item.nvcfg:before {
+	content: '\e816';
+}
+
+.page .wrapper {
+	background:white;
+	top: 2.8rem;
+	left: 0px; 
+	right: 0px;
+	position: absolute;
+	bottom: 0px;
+	overflow:hidden;
+}
+
+.form .item {
+	border-bottom: 1px solid #ccc;
+	padding: .4rem .8rem;
+	min-height: 2rem;
+}
+
+.form .item .op {
+	height: 2rem;
+	padding: 1rem 0rem 0rem .8rem;
+}
+
+
+.form .item input {
+	border: none;
+	outline-style: none;
+	box-shadow: none;
+	padding: .2rem 0rem;
+}
+
+.form .item select {
+	background: white;
+	padding: .2rem 0rem .2rem .8rem;
+	border: none;
+	font-size: 1rem;
+}
+
+.form .item textarea {
+	border: none;
+	width: 100%;
+	height: 4rem;
+	outline-style: none;
+	box-shadow: none;
+}
+
+.form .item.switch {
+	color: #999;
+	position:relative;
+	font-size: .9rem;
+	margin: .3rem;
+	padding: .5rem;
+}
+
+.form .item.switch.checked {
+	color: #444;
+}
+
+.form .item.notify input {
+	width: 3rem;
+	text-align:center;
+	padding: .5rem;
+	border: none;
+}
+
+.form .item.switch i.c {
+	position: absolute;
+	right: .8rem;
+	top: .5rem;
+	padding: .3rem .6rem;
+	color: white;
+	background-color: #ccc;
+	border-radius: 50%;
+}
+
+.form .item.switch.checked i.c {
+	background-color: green;
+}
+
+.form .item.switch i.c:BEFORE {
+	font-family: "fontello";
+	content: '\e80f';
+	font-style: normal;
+}
+
+.form .item span {
+	padding: .8rem;
+	line-height: 2rem;
+}
+.form .item span.label {
+	width: 5rem;
+}
+
+.edit-oc table.oclist {
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	empty-cells: show;
+}
+
+.edit-oc table.oclist td {
+	padding: 0.3em;
+}
+.edit-oc table.oclist tr:nth-child(odd)  td {
+	background-color: #F1F1F1;
+}
+
+.edit-oc table.oclist td.name {
+	width: 70%;
+}
+.edit-oc table.oclist td.price {
+	width: 15%;
+}
+.edit-oc table.oclist td.remove {
+	width: 15%;
+}
+
+.edit-oc .detail {
+	display: none;
+	position: absolute;
+	z-index: 11;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background-color: rgba(0,0,0,0.7);
+}
+.edit-oc .detail .form {
+	background-color: #fff;
+}
+
+.dashboard .forgrid {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	height: 5rem;
+	width: 100%;
+	border-bottom: 1px solid #F1F1f1;
+}
+
+.dashboard .forgrid .item {
+	display: block;
+	position: relative;
+	font-size: .8rem;
+	font-weight:normal;
+	color: #5d5d5d;
+	text-align: center;
+	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
+	-webkit-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	border-left: 1px solid #F1F1f1;
+}
+.dashboard .forgrid .item:FIRST-CHILD {
+	border-left: none;
+}
+
+.dashboard .forgrid .item:before {
+	margin-top: 1rem;
+	font-size: 1.5rem;
+	display:block;
+	font-family: "fontello";
+	margin-bottom: .3rem;
+}
+/*
+.dashboard .forgrid .item.addoc {
+	background-color: #66CCCC; 
+}
+.dashboard .forgrid .item.addic {
+	background-color: #CCFF66;
+}
+.dashboard .forgrid .item.big {
+	background-color: #FF99CC; 
+}
+.dashboard .forgrid .item.chart {
+	background-color: #FF9999;
+}
+.dashboard .forgrid .item.cftype {
+	background-color: #FFCC99; 
+}
+.dashboard .forgrid .item.back2sd {
+	background-color: #FF6666;
+}
+.dashboard .forgrid .item.recom {
+	background-color: #FFFF66	;
+}
+.dashboard .forgrid .item.jd {
+	background-color: #99CC66;
+}
+.dashboard .forgrid .item.pressed {
+	background-color:#e1e1e1; 
+}
+*/
+.dashboard .forgrid .item.addoc {
+	color: #ff7f0e;
+}
+
+.dashboard .forgrid .item.pressed {
+	background-color: #d1d1d1;
+}
+
+.dashboard .forgrid .item.addoc:before {
+	content: '\e80a';
+}
+.dashboard .forgrid .item.addic:before {
+	content: '\e800';
+}
+.dashboard .forgrid .item.big:before {
+	content: '\e802';
+}
+.dashboard .forgrid .item.chart:before {
+	content: '\e803';
+}
+.dashboard .forgrid .item.cftype:before {
+	content: '\e80b';
+}
+.dashboard .forgrid .item.back2sd:before {
+	content: '\e81a';
+}
+.dashboard .forgrid .item.recom:before {
+	content: '\e815';
+}
+.dashboard .forgrid .item.jd:before {
+	content: '\e809';
+}
+
+.dashboard .chartTitle {
+	padding-top: 1rem;
+	text-align: center;
+	color: #444;
+}
+
+.dashboard #yaxis {
+	position: absolute;
+	top: 12rem;
+	bottom: 5rem;
+	left: 0rem;
+	right:2.5rem;
+	overflow: hidden;
+}
+
+.dashboard #chart30 {
+	position: absolute;
+	top: 12rem;
+	bottom: 5rem;
+	left: 2.5rem;
+	right:0;
+	overflow: hidden;
+}
+
+.dashboard text {
+	font-size: 0.75rem;
+	color: #777;
+}
+
+.dashboard  .axis path, .chart .axis line {
+    fill: none;
+    stroke: #777;
+    shape-rendering: crispEdges;
+}
+.dashboard .axis .tick {
+	stroke-dasharray: 1, 2;
+}
+.dashboard .axis .bar {
+	fill: FireBrick;
+}
+
+.dashboard .summary {
+	background-color:#F9F9FA;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	position:absolute;
+	left: 0;
+	right:0;
+	bottom: 0;
+	height: 5rem;
+	width: 100%;
+}
+
+.dashboard .summary .item {
+	display: block;
+	position: relative;
+	font-size: .8rem;
+	font-weight:normal;
+	color: #5d5d5d;
+	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
+	-webkit-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+}
+
+.dashboard .summary .item {
+	padding-left: .5rem;
+	font-size: 1.125rem;
+	line-height: 2rem;
+	padding-top: 1.5rem;
+}
+.dashboard .summary .item i {
+	position: absolute;
+	font-style: normal;
+	font-size: .75rem;
+	color: #b1b1b1;
+	top: 0;
+	left: .5rem;
+}
+/**Dashboard end*/
+
+.list {
+	
+}
+
+.list .month {
+	padding-left: 1rem;
+	height: 2rem;
+	background: #323C52;
+	color: #E1E6ED;
+	font-size: 1rem;
+	line-height: 2rem;
+	position: relative;
+	border-bottom: 1px solid #EDEDED;
+}
+
+.list .month i {
+	margin-left: .3rem;
+	margin-right: .8rem;
+	font-style:normal;
+	font-weight: 800;
+}
+.list .month i.oc {
+	color: #FF3600;
+}
+
+.list .month i.ic {
+	color: #9ACD32;
+}
+
+
+.list .scroll, .list .calendar {
+	z-index:9;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 2rem;
+	background-color: white;
+	overflow: hidden;
+}
+
+.list ul.cclist li.item , ul.detlist li.item {
+	position: relative;
+	border-top: 1px solid #f3f3f3;
+	height: 4rem;
+}
+
+.list ul.cclist li.item.pressed {
+	background-color:#E1E6ED; 
+}
+
+
+.list ul.cclist li.item .cat, ul.detlist li.item .cat {
+	margin-left: 1rem;
+	padding: .5rem 0;
+}
+
+.list ul.cclist li.item .checki, ul.detlist li.item .checki {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 1.5rem;	
+}
+
+.list ul.cclist li.item .desc, ul.detlist li.item .desc {
+	margin-left: 1rem;
+	width:12rem;
+	height: 1.2rem;
+	color: #bbb;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+
+.list ul.cclist li.item .total, ul.detlist li.item .total {
+	position: absolute;
+	right: 1rem;
+	top: .5rem;
+}
+
+.list ul.cclist li.item .total.oc, ul.detlist li.item .total.oc {
+	color: #B22222;
+	font-weight: 800;
+}
+
+.list ul.cclist li.item .total.ic, ul.detlist li.item .total.ic {
+	color: #9ACD32;
+	font-weight: 800;
+}
+
+.list ul.cclist li.item .method, ul.detlist li.item .method {
+	position: absolute;
+	top: 2rem;
+	right: 1rem;
+	color: #bbb;
+	font-style: normal;
+}
+
+.list ul.cclist li.title, ul.detlist li.title {
+	border-top: 1px solid #e1e1e1;
+	position: relative;
+	color: #A7AEBC;
+	background-color: #F9F9FA;
+	line-height: 1.5rem;
+	padding-left: 1rem;
+}
+
+.list ul.cclist li.title i, ul.detlist li.title i {
+	font-style:normal;
+	position: absolute;
+	right: 1rem;
+	top:0;
+}
+
+.list .calendar .weeks {
+	height: 1.5rem;
+}
+
+.list .calendar .daygrid {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 1.6rem; 
+}
+
+.list .calendar .daygrid .date {
+	float: left;
+}
+
+.chart .item {
+	background-color: #F9F9FA;
+	padding: .5rem;
+}
+
+.chart .item  input {
+	border: none;
+	outline-style: none;
+	box-shadow: none;
+	margin-left: 1rem;
+	font-size: 1.125rem;
+	padding: .2rem 0rem;
+	background-color: #F9F9FA;
+	border-bottom: 1px solid #EBEBEB;
+	width: 10rem;
+}
+
+.chart .op {
+	position: absolute;
+	right: 1rem;
+	top: 2rem;
+}
+
+.chart #chsummary {
+	position: absolute;
+	bottom: 0;
+	top: 6rem;
+	left: 0;
+	right: 0;
+	overflow: hidden;
+}
+
+.chart #chsummary li.info {
+	border-top: 1px solid #efefef;
+	padding: .5rem;
+}
+.chart #chsummary li.info i {
+	font-style: normal;
+	color: #999;
+}
+.chart #chsummary li.info span {
+	float: right;
+}
+
+.chart #chsummary li.info.type {
+	padding-left: 1.5rem;	
+}
+
+.chart text.percent {
+	fill:white;
+	text-anchor:middle;
+	font-size:0.75rem;
+}
+
+
+.chart #graph .axis path, .chart #graph .axis line {
+    fill: none;
+    stroke: #777;
+    shape-rendering: crispEdges;
+}
+.chart #graph .axis .tick {
+	stroke-dasharray: 1, 2;
+}
+.chart #graph .axis .bar {
+	fill: FireBrick;
+}
+
+.chart .title {
+	position: absolute;
+	bottom: 1rem;
+	left: 0;
+	right: 0;
+	text-align: center;
+}
+
+.chart .title i {
+	vertical-align: middle;
+	font-size: 1.75rem;
+	padding: .8rem 1rem;
+	color: #444;
+	text-align: center;
+}
+.chart .title i.pressed {
+	color: #3BC4F7;
+}
+
+.chart .title i.prev:before {
+	font-family: "fontello";
+	font-style: normal;
+	content: '\e809';
+}
+
+.chart .title i.next:before {
+	font-style: normal;
+	font-family: "fontello";
+	content: '\e80a';
+}
+
+.config.wrapper {
+	background-color: #efefef;
+}
+
+
+.oi-compare table.compare {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.oi-compare table.compare td {
+	padding: .3rem .2rem;
+	border-bottom: 1px solid #dfdfdf;
+}
+
+.oi-compare table.compare td.month {
+	width: 3rem;
+	color: #b1b1b1;
+	text-align: center;
+}
+.oi-compare table.compare td.chart {
+	border-left: 1px solid #dfdfdf;
+	border-right: 1px solid #dfdfdf;
+}
+.oi-compare table.compare td.chart div {
+	margin-top: .3rem;
+	height: 1rem;
+	-webkit-transition:width 2s;
+	width: 0;
+}
+.oi-compare table.compare td.chart div.oc {
+	width: 0;
+	background-color: #B22222;
+	-webkit-transition:width 2s;
+}
+.oi-compare table.compare td.chart div.ic {
+	width: 0;
+	background-color: #9ACD32;
+	-webkit-transition:width 2s;
+}
+
+.oi-compare table.compare td.data {
+	width: 6rem;
+	font-size: 0.75rem;
+}
+.oi-compare table.compare  .oc {
+	color: #B22222;
+}
+
+.oi-compare table.compare  .ic {
+	color: #9ACD32;
+}
+
+ul li.d {
+	border-top: 1px solid #d1d1d1;
+	background-color: white;
+	padding-left: 1rem;
+}
+
+ul li.d .title {
+	line-height: 1.75rem;
+	font-size: 1.125rem;
+}
+
+ul li.d .desc {
+	line-height: 1.75rem;
+	font-size: 1rem;
+	color: #aaa;
+}
+
+.config.wrapper li.empty {
+	height: .5rem;
+}
+
+ul li.entry {
+	border-bottom: 1px solid #ccc;
+	background-color: white;
+	height: 3rem;
+	line-height: 3rem;
+	font-size: 1.125rem;
+	padding-left: 1rem;
+	position: relative;
+}
+
+ul li.entry.pressed {
+	background-color: #e1e1e1;
+}
+
+ul li.entry i.value {
+	position: absolute;
+	right: 1rem;
+	top: 0;
+	font-style: normal;
+	color: #b1b1b1;
+}
+
+ul li.entry i.remove {
+	position: absolute;
+	right: 1rem;
+	top: .5rem;
+	font-size: 1.25rem;
+	line-height: 2rem;
+	width: 3rem;
+	text-align: right;
+}
+
+ul li.entry i.remove:BEFORE {
+	font-family: "fontello";
+	font-style: normal;
+	content: '\e819';
+}
+
+.pop-menu {
+	z-index: 9999;
+	background-color: rgba(0,0,0,0.7)
+}
+
+.pop-menu ul {
+	position: absolute;
+	left: 3rem;
+	right: 3rem;
+	top: 10rem;
+	background: white;
+	font-size: 1rem;
+	padding: .5rem;
+}
+
+.pop-menu ul li.title {
+	border-bottom: 2px solid #efefef;
+	color: #FF6633;
+	font-size: 1.25rem;
+}
+
+
+.pop-menu ul li {
+	padding: .5rem;
+	border-bottom: 1px solid #efefef;
+}
+
+.pop-menu ul li.disabled {
+	color: #cdcdcd;	
+}
+
+
+@keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.6; }
+    to { opacity: 1.0; }
+}
+ 
+@-webkit-keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.6; }
+    to { opacity: 1.0; }
+}
+ 
+.blink {
+    animation:fade 3000ms infinite;
+    -webkit-animation:fade 3000ms infinite;
+}
